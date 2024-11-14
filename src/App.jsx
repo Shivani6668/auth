@@ -1,12 +1,24 @@
 import React, { useEffect } from "react";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import "./App.css"
-
+import jwt_decode from "jwt-decode";
 const App = () => {
   // Google Login Handler
+  // const handleGoogleLogin = (response) => {
+  //   console.log("Google response:", response);
+  // };
+
   const handleGoogleLogin = (response) => {
-    console.log("Google response:", response);
+    console.log("response befor decode",response);
+    
+    if (response.credential) {
+      const decodedToken = jwt_decode(response.credential);
+      console.log("response after Decoded Token:", decodedToken);
+    } else {
+      console.error("No credentials found in the response.");
+    }
   };
+
 
   const handleGoogleFailure = (error) => {
     console.error("Google login failed:", error);
