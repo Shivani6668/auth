@@ -73,9 +73,9 @@ const App = () => {
         </button>
 
         {/* LinkedIn Login Button */}
-        {/* <button onClick={handleLinkedInLogin} style={{ padding: "10px 20px", fontSize: "16px" }}>
+        <button onClick={handleLinkedInLogin} style={{ padding: "10px 20px", fontSize: "16px" }}>
           Login with LinkedIn
-        </button> */}
+        </button>
       </div>
     </GoogleOAuthProvider>
   );
