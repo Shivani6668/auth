@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import "./App.css"
-import jwt_decode from "jwt-decode";
+import * as jwtDecode from 'jwt-decode';
+
 const App = () => {
   // Google Login Handler
   // const handleGoogleLogin = (response) => {
