@@ -120,7 +120,7 @@ const App = () => {
       script.async = true;
       script.onload = () => {
         window.FB.init({
-          appId: "3780272862214338",
+          appId: "1942181756281130",
           cookie: true,
           xfbml: true,
           version: "v12.0",
