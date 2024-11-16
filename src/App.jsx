@@ -200,14 +200,7 @@ const App = () => {
     }, { scope: "email" });
   };
 
-  // LinkedIn Login Handler
-  const handleLinkedInLogin = () => {
-    window.IN.User.authorize(() => {
-      window.IN.API.Profile("me").fields("id", "firstName", "lastName", "emailAddress").result((data) => {
-        console.log("LinkedIn user data:", data);
-      });
-    });
-  };
+
 
   return (
     <GoogleOAuthProvider clientId="873209957443-2tsd1s9bchu0fb3dk0mlkb9jko60a08c.apps.googleusercontent.com">
@@ -222,10 +215,7 @@ const App = () => {
           Login with Facebook
         </button>
 
-        {/* LinkedIn Login Button */}
-        <button onClick={handleLinkedInLogin} style={{ padding: "10px 20px", fontSize: "16px" }}>
-          Login with LinkedIn
-        </button>
+       
       </div>
     </GoogleOAuthProvider>
   );
