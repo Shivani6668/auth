@@ -100,106 +100,47 @@
 
 
 
+import React, { useEffect } from 'react';
+import { LoginSocialFacebook } from 'reactjs-social-login';
+import { FacebookLoginButton } from 'react-social-login-buttons';
 
-
-
-
-import React, { useEffect } from "react";
-import { GoogleOAuthProvider } from "@react-oauth/google";
-import "./App.css";
-
-const App = () => {
-  // Facebook SDK Initialization
+function App() {
   useEffect(() => {
-    // Dynamically load the Facebook SDK script
-    const loadFacebookSDK = () => {
-      if (document.getElementById("facebook-jssdk")) return;
-      const script = document.createElement("script");
-      script.id = "facebook-jssdk";
-      script.src = "https://connect.facebook.net/en_US/sdk.js";
-      script.async = true;
-      script.onload = () => {
-        window.FB.init({
-          appId: "1942181756281130",
-          cookie: true,
-          xfbml: true,
-          version: "v12.0",
-        });
-      };
-      document.body.appendChild(script);
+    // Ensure the Facebook SDK is loaded and initialized
+    window.fbAsyncInit = function() {
+      window.FB.init({
+        appId: '1082757606891954',
+        cookie: true,
+        xfbml: true,
+        version: 'v15.0'
+      });
     };
 
-    loadFacebookSDK();
+    // Load the Facebook SDK asynchronously
+    (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = 'https://connect.facebook.net/en_US/sdk.js';
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
   }, []);
 
-  // Facebook Login Handler
-  const handleFacebookLogin = () => {
-    if (!window.FB) {
-      console.error("Facebook SDK not loaded.");
-      return;
-    }
-
-    window.FB.login(
-      (response) => {
-        if (response.authResponse) {
-          console.log("Facebook response:", response);
-          window.FB.api("/me", { fields: "name,email" }, (userInfo) => {
-            console.log("Facebook user info:", userInfo);
-          });
-        } else {
-          console.log("User cancelled login or did not fully authorize.");
-        }
-      },
-      { scope: "email" }
-    );
-  };
-
-  // LinkedIn Login Handler
-  const handleLinkedInLogin = () => {
-    if (!window.IN) {
-      console.error("LinkedIn SDK not loaded.");
-      return;
-    }
-
-    window.IN.User.authorize(() => {
-      window.IN.API.Profile("me")
-        .fields("id", "firstName", "lastName", "emailAddress")
-        .result((data) => {
-          console.log("LinkedIn user data:", data);
-        });
-    });
-  };
-
   return (
-    <GoogleOAuthProvider clientId="873209957443-2tsd1s9bchu0fb3dk0mlkb9jko60a08c.apps.googleusercontent.com">
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: "20px",
+    <>
+      <LoginSocialFacebook
+        appId="1082757606891954"
+        onResolve={(response) => {
+          console.log(response);
+        }}
+        onReject={(error) => {
+          console.log(error);
         }}
       >
-        <h1>Social Login</h1>
-
-        {/* Facebook Login Button */}
-        <button
-          onClick={handleFacebookLogin}
-          style={{ padding: "10px 20px", fontSize: "16px" }}
-        >
-          Login with Facebook
-        </button>
-
-        {/* LinkedIn Login Button */}
-        <button
-          onClick={handleLinkedInLogin}
-          style={{ padding: "10px 20px", fontSize: "16px" }}
-        >
-          Login with LinkedIn
-        </button>
-      </div>
-    </GoogleOAuthProvider>
+        <FacebookLoginButton />
+      </LoginSocialFacebook>
+    </>
   );
-};
+}
 
 export default App;

@@ -20,5 +20,6 @@ export default defineConfig({
   optimizeDeps: {
     include: ['jwt-decode'], // Ensures jwt-decode is pre-bundled by Vite
   },
+  
  
 });
