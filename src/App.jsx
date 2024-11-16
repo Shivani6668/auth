@@ -128,6 +128,7 @@ function App() {
 
   return (
     <>
+    <h1>Facebook</h1>
       <LoginSocialFacebook
         appId="1082757606891954"
         onResolve={(response) => {
