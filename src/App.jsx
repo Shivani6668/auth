@@ -100,48 +100,135 @@
 
 
 
-import React, { useEffect } from 'react';
-import { LoginSocialFacebook } from 'reactjs-social-login';
-import { FacebookLoginButton } from 'react-social-login-buttons';
+// import React, { useEffect } from 'react';
+// import { LoginSocialFacebook } from 'reactjs-social-login';
+// import { FacebookLoginButton } from 'react-social-login-buttons';
 
-function App() {
+// function App() {
+//   useEffect(() => {
+//     // Ensure the Facebook SDK is loaded and initialized
+//     window.fbAsyncInit = function() {
+//       window.FB.init({
+//         appId: '1082757606891954',
+//         cookie: true,
+//         xfbml: true,
+//         version: 'v15.0'
+//       });
+//     };
+
+//     // Load the Facebook SDK asynchronously
+//     (function(d, s, id) {
+//       var js, fjs = d.getElementsByTagName(s)[0];
+//       if (d.getElementById(id)) return;
+//       js = d.createElement(s); js.id = id;
+//       js.src = 'https://connect.facebook.net/en_US/sdk.js';
+//       fjs.parentNode.insertBefore(js, fjs);
+//     }(document, 'script', 'facebook-jssdk'));
+//   }, []);
+
+//   return (
+//     <>
+//     <h1>Facebook</h1>
+//       <LoginSocialFacebook
+//         appId="1082757606891954"
+//         onResolve={(response) => {
+//           console.log(response);
+//         }}
+//         onReject={(error) => {
+//           console.log(error);
+//         }}
+//       >
+//         <FacebookLoginButton />
+//       </LoginSocialFacebook>
+//     </>
+//   );
+// }
+
+// export default App;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import React, { useEffect } from "react";
+import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
+import "./App.css"
+
+const App = () => {
+  // Google Login Handler
+  const handleGoogleLogin = (response) => {
+    console.log("Google response:", response);
+  };
+
+  const handleGoogleFailure = (error) => {
+    console.error("Google login failed:", error);
+  };
+
+  // Facebook SDK Initialization
   useEffect(() => {
-    // Ensure the Facebook SDK is loaded and initialized
-    window.fbAsyncInit = function() {
+    window.fbAsyncInit = function () {
       window.FB.init({
-        appId: '1082757606891954',
+        appId: "1082757606891954",
         cookie: true,
         xfbml: true,
-        version: 'v15.0'
+        version: "v12.0",
       });
     };
-
-    // Load the Facebook SDK asynchronously
-    (function(d, s, id) {
-      var js, fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) return;
-      js = d.createElement(s); js.id = id;
-      js.src = 'https://connect.facebook.net/en_US/sdk.js';
-      fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));
   }, []);
 
+  // Facebook Login Handler
+  const handleFacebookLogin = () => {
+    window.FB.login((response) => {
+      if (response.authResponse) {
+        console.log("Facebook response:", response);
+        window.FB.api("/me", { fields: "name,email" }, (userInfo) => {
+          console.log("Facebook user info:", userInfo);
+        });
+      } else {
+        console.log("User cancelled login or did not fully authorize.");
+      }
+    }, { scope: "email" });
+  };
+
+  // LinkedIn Login Handler
+  const handleLinkedInLogin = () => {
+    window.IN.User.authorize(() => {
+      window.IN.API.Profile("me").fields("id", "firstName", "lastName", "emailAddress").result((data) => {
+        console.log("LinkedIn user data:", data);
+      });
+    });
+  };
+
   return (
-    <>
-    <h1>Facebook</h1>
-      <LoginSocialFacebook
-        appId="1082757606891954"
-        onResolve={(response) => {
-          console.log(response);
-        }}
-        onReject={(error) => {
-          console.log(error);
-        }}
-      >
-        <FacebookLoginButton />
-      </LoginSocialFacebook>
-    </>
+    <GoogleOAuthProvider clientId="873209957443-2tsd1s9bchu0fb3dk0mlkb9jko60a08c.apps.googleusercontent.com">
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "20px" }}>
+        <h1>Social Login</h1>
+
+        {/* Google Login Button */}
+        <GoogleLogin onSuccess={handleGoogleLogin} onFailure={handleGoogleFailure} />
+
+        {/* Facebook Login Button */}
+        <button onClick={handleFacebookLogin} style={{ padding: "10px 20px", fontSize: "16px" }}>
+          Login with Facebook
+        </button>
+
+        {/* LinkedIn Login Button */}
+        <button onClick={handleLinkedInLogin} style={{ padding: "10px 20px", fontSize: "16px" }}>
+          Login with LinkedIn
+        </button>
+      </div>
+    </GoogleOAuthProvider>
   );
-}
+};
 
 export default App;
